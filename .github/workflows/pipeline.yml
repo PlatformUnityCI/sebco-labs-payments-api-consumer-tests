@@ -11,17 +11,9 @@ on:
     - cron: '30 21 * * 1-5'
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'QA repo name'
-        default: main
-        required: true
       pytest_mark:
         description: 'QA mark to run tests'
         default: payments
-        required: true
-      run_mutation:
-        description: 'Run mutation testing'
-        default: 'true'
         required: true
 
 concurrency:
@@ -70,14 +62,27 @@ jobs:
       - name: Configure Python Path
         run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
+      - name: Export OpenAPI spec
+        run: python scripts/export_openapi.py
       - name: Run tests
         run: |
           mkdir -p report
-          PYTEST_MARK="${{ github.event.inputs.pytest_mark || 'payments' }}"
-          pytest -m "$PYTEST_MARK" \
+
+          PYTEST_MARK="${{ inputs.pytest_mark }}"
+          if [ -z "$PYTEST_MARK" ]; then
+            PYTEST_MARK="payments"
+          fi
+          
+          echo "Running tests with mark: $PYTEST_MARK"
+
+          pytest -m "$PYTEST_MARK" -v \
+            --maxfail=1 \
+            --disable-warnings \
             --junitxml=report/junit.xml \
             --html=report/html-report.html \
             --self-contained-html
+        env:
+          PYTEST_ADDOPTS: "--color=yes"
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -91,6 +96,12 @@ jobs:
         with:
           name: test-report
           path: report
+        
+      - name: Upload Swagger
+        uses: actions/upload-artifact@v7
+        with:
+          name: swagger-docs
+          path: docs/swagger
 
   qa-engine:
     if: github.event_name == 'pull_request'

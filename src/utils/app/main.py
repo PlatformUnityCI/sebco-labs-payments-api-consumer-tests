@@ -1,14 +1,14 @@
 
 from fastapi import FastAPI, HTTPException, status
 
-from app.schemas import (
+from src.utils.app.schemas import (
     CreateTransferRequest,
     ErrorResponse,
     TransferResponse,
 )
-from app.services import create_transfer, get_transfer
+from src.utils.app.services import create_transfer, get_transfer
 
-app = FastAPI(title="FastAPI QA Lab", version="1.0.0")
+app = FastAPI(title="FastAPI QA Payments Lab", version="1.0.0")
 
 
 @app.get("/health")
