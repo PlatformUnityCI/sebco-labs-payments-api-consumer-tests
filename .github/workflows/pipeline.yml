@@ -1,0 +1,113 @@
+name: CLI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [ "main" ]
+    types: [ opened, synchronize, reopened ]
+  schedule:
+    - cron: '30 21 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'QA repo name'
+        default: main
+        required: true
+      pytest_mark:
+        description: 'QA mark to run tests'
+        default: mutmut
+        required: true
+      run_mutation:
+        description: 'Run mutation testing'
+        default: 'true'
+        required: true
+
+concurrency:
+  group: qa-pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+  issues: write
+  actions: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Debug info
+        run: |
+          echo "GitHub event: ${{ github.event_name }}"
+          echo "Head ref: ${{ github.head_ref }}"
+          echo "Base ref: ${{ github.base_ref }}"
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.12.0
+
+      - name: Cache pip
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -I
+
+      - name: Configure Python Path
+        run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+
+      - name: Run tests
+        run: |
+          mkdir -p report
+          PYTEST_MARK="${{ github.event.inputs.pytest_mark || 'mutmut' }}"
+          pytest -m "$PYTEST_MARK" \
+            --junitxml=report/junit.xml \
+            --html=report/html-report.html \
+            --self-contained-html
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: report/junit.xml
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: test-report
+          path: report
+
+  qa-engine:
+    if: github.event_name == 'pull_request'
+    needs: build
+    uses: PlatformUnityCI/sebco-qa-engine/.github/workflows/python-qa.yml@main
+    with:
+      python-version: "3.12"
+      analyzers: "mutmut,flake8,coverage,bandit,radon"
+      output-dir: "qa-report"
+    secrets:
+      token: ${{ secrets.GITHUB_TOKEN }}
+
+  qa-guard:
+    if: github.event_name == 'pull_request'
+    needs:
+      - build
+      - qa-engine
+    uses: PlatformUnityCI/cross-platform-guard/.github/workflows/ai-review.yml@main
+    with:
+      language: python
