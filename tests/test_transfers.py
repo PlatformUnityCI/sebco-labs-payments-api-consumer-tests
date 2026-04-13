@@ -1,22 +1,21 @@
 
 from fastapi.testclient import TestClient
-from app.main import app
-from app.storage import transfers_db, idempotency_index
-
+from src.utils.app.main import app
+from src.utils.app.storage import transfers_db, idempotency_index
 import pytest
 
 client = TestClient(app)
 
 @pytest.mark.payments
-class Payments:
+class TestPayments:
         
-    def setup_function():
+    def setup_function(self):
         transfers_db.clear()
         idempotency_index.clear()
     
     
     @pytest.mark.payments
-    def test_create_transfer_happy_path():
+    def test_create_transfer_happy_path(self):
         payload = {
             "from_account_id": "ACC-001",
             "to_alias": "alias.destino",
@@ -36,7 +35,7 @@ class Payments:
         assert body["transfer_id"].startswith("TRF-")
     
     
-    def test_create_transfer_rejects_invalid_currency():
+    def test_create_transfer_rejects_invalid_currency(self):
         payload = {
             "from_account_id": "ACC-001",
             "to_alias": "alias.destino",
@@ -51,7 +50,7 @@ class Payments:
         assert response.json()["detail"]["error_code"] == "UNSUPPORTED_CURRENCY"
     
     
-    def test_create_transfer_rejects_negative_amount():
+    def test_create_transfer_rejects_negative_amount(self):
         payload = {
             "from_account_id": "ACC-001",
             "to_alias": "alias.destino",
@@ -65,7 +64,7 @@ class Payments:
         assert response.status_code == 422
     
     
-    def test_create_transfer_is_idempotent():
+    def test_create_transfer_is_idempotent(self):
         payload = {
             "from_account_id": "ACC-001",
             "to_alias": "alias.destino",
@@ -82,7 +81,7 @@ class Payments:
         assert response_1.json()["transfer_id"] == response_2.json()["transfer_id"]
     
     
-    def test_get_transfer_by_id():
+    def test_get_transfer_by_id(self):
         payload = {
             "from_account_id": "ACC-001",
             "to_alias": "alias.destino",
@@ -100,7 +99,7 @@ class Payments:
         assert response.json()["transfer_id"] == transfer_id
     
     
-    def test_get_transfer_not_found():
+    def test_get_transfer_not_found(self):
         response = client.get("/transfers/TRF-UNKNOWN")
     
         assert response.status_code == 404

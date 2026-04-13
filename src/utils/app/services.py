@@ -1,7 +1,7 @@
 
 from uuid import uuid4
 
-from app.storage import transfers_db, idempotency_index
+from src.utils.app.storage import transfers_db, idempotency_index
 
 
 def create_transfer(data: dict) -> tuple[dict, bool]:

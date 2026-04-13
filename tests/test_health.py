@@ -1,14 +1,14 @@
 
 from fastapi.testclient import TestClient
-from app.main import app
+from src.utils.app.main import app
 import pytest
 
 client = TestClient(app)
 
 @pytest.mark.payments
-class Payments:
+class TestPayments:
     
-    def test_healthcheck_returns_ok():
+    def test_healthcheck_returns_ok(self):
         response = client.get("/health")
     
         assert response.status_code == 200
