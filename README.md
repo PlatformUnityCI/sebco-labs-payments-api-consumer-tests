@@ -59,5 +59,6 @@ pytest -m payments
 
 La documentación OpenAPI se genera automáticamente y se publica como sitio estático.
 
-- 👉 [Ver Swagger online](https://sebascouto.github.io/sebco-labs-payments-api-consumer-tests/swagger/)  
-- 👉 [Guía técnica](docs/swagger/swagger-openapi-uso-y-visualizacion.md)
+- 👉 [Ver Swagger online](https://platformunityci.github.io/sebco-labs-payments-api-consumer-tests/swagger/)  
+- 👉 [Guía técnica](https://github.com/PlatformUnityCI/sebco-labs-payments-api-consumer-tests/blob/main/docs/swagger/swagger-openapi-uso-y-visualizacion.md)
+
