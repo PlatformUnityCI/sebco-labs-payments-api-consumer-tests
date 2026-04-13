@@ -1,6 +1,6 @@
 [tool.mutmut]
 paths_to_mutate = [
-  "lib_core/time_utils"
+  "src/utils"
 ]
 tests_dir = [
   "tests"
