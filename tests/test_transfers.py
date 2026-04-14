@@ -28,13 +28,31 @@ class TestPayments:
     
         assert response.status_code == 202
         body = response.json()
+
+        #Validación básica de la respuesta
         assert body["state"] == "PENDING"
         assert body["amount"] == 250.0
         assert body["currency"] == "ARS"
         assert body["idempotency_key"] == "IDEMP-001"
+
+        # 🔥 transfer_id fuerte
+        assert body["transfer_id"] is not None
         assert body["transfer_id"].startswith("TRF-")
+
+        # 🔥 persistencia
+        assert body["transfer_id"] in transfers_db
+        assert transfers_db[body["transfer_id"]] is not None
     
-    
+        # 🔥 idempotencia index
+        assert idempotency_index[payload["idempotency_key"]] == body["transfer_id"]
+        
+        # 🔥 comportamiento idempotente
+        response2 = client.post("/transfers", json=payload)
+        body2 = response2.json()
+
+        assert body2["transfer_id"] == body["transfer_id"]
+
+   
     def test_create_transfer_rejects_invalid_currency(self):
         payload = {
             "from_account_id": "ACC-001",
