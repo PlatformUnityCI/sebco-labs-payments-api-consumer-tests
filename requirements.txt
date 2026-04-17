@@ -1,5 +1,4 @@
-git+https://github.com/PlatformUnityCI/sebco-commons-qa.git@main
-
+git+https://github.com/PlatformUnityCI/sebco-commons-qa.git@commons-qa
 # =========================================================
 # Core API (FastAPI app runtime)
 # =========================================================
