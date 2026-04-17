@@ -13,7 +13,7 @@ on:
     inputs:
       pytest_mark:
         description: 'QA mark to run tests'
-        default: payments
+        default: regression
         required: true
 
 concurrency:
@@ -70,7 +70,7 @@ jobs:
 
           PYTEST_MARK="${{ inputs.pytest_mark }}"
           if [ -z "$PYTEST_MARK" ]; then
-            PYTEST_MARK="payments"
+            PYTEST_MARK="regression"
           fi
           
           echo "Running tests with mark: $PYTEST_MARK"

@@ -1,6 +1,6 @@
 [tool.mutmut]
 paths_to_mutate = [
-  "src/utils"
+  "lib_core/utils"
 ]
 tests_dir = [
   "tests"

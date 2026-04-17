@@ -1,12 +1,12 @@
 
 from fastapi import FastAPI, HTTPException, status
 
-from src.utils.app.schemas import (
+from lib_core.utils.app.schemas import (
     CreateTransferRequest,
     ErrorResponse,
     TransferResponse,
 )
-from src.utils.app.services import create_transfer, get_transfer
+from lib_core.utils.app.services import create_transfer, get_transfer
 
 app = FastAPI(title="FastAPI QA Payments Lab", version="1.0.0")
 
@@ -16,8 +16,7 @@ def healthcheck() -> dict:
     return {"status": "ok"}
 
 
-@app.post(
-    "/transfers",
+@app.post("/transfers",
     response_model=TransferResponse,
     status_code=status.HTTP_202_ACCEPTED,
     responses={

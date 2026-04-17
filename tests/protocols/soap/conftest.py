@@ -1,0 +1,3 @@
+"""
+soap-specific fixtures
+"""

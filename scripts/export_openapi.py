@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from src.utils.app.main import app
+from lib_core.utils.app.main import app
 
 output_dir = Path("docs/swagger")
 output_dir.mkdir(parents=True, exist_ok=True)
