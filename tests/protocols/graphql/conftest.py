@@ -1,0 +1,3 @@
+"""
+graphql-specific fixtures
+"""

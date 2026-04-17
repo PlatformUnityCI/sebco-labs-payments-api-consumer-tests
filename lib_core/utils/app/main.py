@@ -16,8 +16,7 @@ def healthcheck() -> dict:
     return {"status": "ok"}
 
 
-@app.post(
-    "/transfers",
+@app.post("/transfers",
     response_model=TransferResponse,
     status_code=status.HTTP_202_ACCEPTED,
     responses={
