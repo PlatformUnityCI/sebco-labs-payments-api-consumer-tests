@@ -5,7 +5,7 @@ paths_to_mutate = [
 tests_dir = [
   "tests"
 ]
-runner = "PYTHONPATH=$(pwd):$(pwd)/.. python -m pytest -m regression -q"
+runner = "python -m pytest -m regression -q"
 do_not_mutate = [
   "__init__.py"
 ]
