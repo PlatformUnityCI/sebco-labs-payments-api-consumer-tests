@@ -60,7 +60,6 @@ Desktop.ini
 logs/
 tmp/
 temp/
-scripts/parse_mutmut_raw.py
 
 # =========================
 # 📊 Reports / artifacts (LOCAL)
@@ -78,3 +77,5 @@ artifacts/
 # 🧟 Mutation testing
 # =========================
 mutants/
+scripts/parse_mutmut_raw.py
+.mutmut-cache/
