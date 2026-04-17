@@ -35,7 +35,7 @@ Abrir en el navegador:
 
 La documentación también se encuentra disponible de forma pública en:
 
-- https://sebascouto.github.io/sebco-labs-payments-api-consumer-tests/swagger/
+- [Swagger FastAPI QA Payments Lab](https://platformunityci.github.io/sebco-labs-payments-api-consumer-tests/swagger/)
 
 > Esta versión refleja el estado desplegado desde main y se actualiza automáticamente vía GitHub Actions.
 
