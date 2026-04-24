@@ -23,8 +23,8 @@ exclude = [
 ]
 
 extend-ignore = [
-  "W391",  # blank line at end
-  "W292",  # newline missing
-  "F403",  # behave import *
-  "F405"   # behave given/when/then
+  "W391",
+  "W292",
+  "F403",
+  "F405"
 ]

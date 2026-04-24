@@ -127,7 +127,7 @@ jobs:
   qa-engine:
     if: github.event_name == 'pull_request'
     needs: build
-    uses: PlatformUnityCI/sebco-qa-engine/.github/workflows/python-qa.yml@main
+    uses: PlatformUnityCI/sebco-qa-engine/.github/workflows/python-qa.yml@preuba-auto-analysis
     with:
       python-version: "3.12"
       analyzers: "mutmut,flake8,coverage,bandit,radon"
