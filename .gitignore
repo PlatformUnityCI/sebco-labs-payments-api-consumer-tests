@@ -6,7 +6,16 @@ __pycache__/
 *.pyo
 *.pyd
 *.pyc
-node_modules/
+
+# =========================
+# 🟢 BDD / Node tooling (LOCAL)
+# =========================
+tools/gherkin/node_modules/
+tools/
+
+package.json
+package-lock.json
+pretty.output
 
 # Distribución / packaging
 build/
