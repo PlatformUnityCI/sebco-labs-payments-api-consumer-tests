@@ -30,6 +30,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DEFAULT_QA_TAG: 'regression'
 
     steps:
       - name: Debug info
@@ -64,13 +66,14 @@ jobs:
 
       - name: Export OpenAPI spec
         run: python scripts/export_openapi.py
+
       - name: Run tests
         run: |
           mkdir -p report
 
           QA_TAG="${{ inputs.qa_tag }}"
           if [ -z "$QA_TAG" ]; then
-            QA_TAG="regression"
+            QA_TAG="$QA_TAG"
           fi
           
           echo "Running tests with mark: $QA_TAG"
@@ -86,6 +89,15 @@ jobs:
 
       - name: Run behave
         run: |
+          mkdir -p report/behave
+
+          QA_TAG="${{ inputs.qa_tag }}"
+          if [ -z "$QA_TAG" ]; then
+            QA_TAG="$DEFAULT_QA_TAG"
+          fi
+
+          echo "Running behave with tag: @$QA_TAG"
+
           behave --tags="@$QA_TAG" \
             --junit \
             --junit-directory report/behave
