@@ -1,5 +1,6 @@
 from behave import *
 import json
+import logging
 
 
 @given("el storage de transferencias está vacío")
@@ -42,8 +43,8 @@ def step_send_transfer(context):
     context.response = response
     context.body = response.json()
 
-    print("\nRequest:", json.dumps(context.payload, indent=2, default=str))
-    print("Response:", json.dumps(context.body, indent=2, ensure_ascii=False))
+    logging.info("\nRequest: %s", json.dumps(context.payload, indent=2, default=str))
+    logging.info("Response: %s", json.dumps(context.body, indent=2, ensure_ascii=False))
 
 
 @then("el status code es {status:d}")
