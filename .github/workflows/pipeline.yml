@@ -11,8 +11,8 @@ on:
     - cron: '30 21 * * 1-5'
   workflow_dispatch:
     inputs:
-      pytest_mark:
-        description: 'QA mark to run tests'
+      qa_tag:
+        description: 'QA tag to run tests'
         default: regression
         required: true
 
@@ -68,14 +68,14 @@ jobs:
         run: |
           mkdir -p report
 
-          PYTEST_MARK="${{ inputs.pytest_mark }}"
-          if [ -z "$PYTEST_MARK" ]; then
-            PYTEST_MARK="regression"
+          QA_TAG="${{ inputs.qa_tag }}"
+          if [ -z "$QA_TAG" ]; then
+            QA_TAG="regression"
           fi
           
-          echo "Running tests with mark: $PYTEST_MARK"
+          echo "Running tests with mark: $QA_TAG"
 
-          pytest -m "$PYTEST_MARK" -v \
+          pytest -m "$QA_TAG" -v \
             --maxfail=1 \
             --disable-warnings \
             --junitxml=report/junit.xml \
@@ -83,6 +83,12 @@ jobs:
             --self-contained-html
         env:
           PYTEST_ADDOPTS: "--color=yes"
+
+      - name: Run behave
+        run: |
+          behave --tags="@$QA_TAG" \
+            --junit \
+            --junit-directory report/behave
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
