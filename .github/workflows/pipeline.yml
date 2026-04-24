@@ -102,7 +102,7 @@ jobs:
             --tags="@$QA_TAG" \
             --junit \
             --junit-directory report/behave \
-            -f html \
+            -f behave_html_formatter:HTMLFormatter \
             -o report/behave/report.html
 
       - name: Publish Test Results
