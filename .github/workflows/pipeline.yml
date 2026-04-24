@@ -98,9 +98,12 @@ jobs:
 
           echo "Running behave with tag: @$QA_TAG"
 
-          behave --tags="@$QA_TAG" \
+          behave \
+            --tags="@$QA_TAG" \
             --junit \
-            --junit-directory report/behave
+            --junit-directory report/behave \
+            -f html \
+            -o report/behave/report.html
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
