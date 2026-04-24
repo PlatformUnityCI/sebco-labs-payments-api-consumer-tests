@@ -13,11 +13,13 @@ from lib_core.utils.app.storage import transfers_db, idempotency_index
 
 logger = logging.getLogger(__name__)
 
+
 @pytest.fixture()
 def payments_health_services():
     client_service = TestClient(app)
     logger.info("Instanciando PaymentsAPI para tests de healthcheck")
     return PaymentsAPI(client_service)  # Instancia de PaymentsAPI para usar en tests de healthcheck
+
 
 @pytest.fixture()
 def payments_transfer_services():
@@ -25,12 +27,14 @@ def payments_transfer_services():
     logger.info("Instanciando PaymentsAPI para tests de transferencias")
     return PaymentsAPI(client_service)  # Instancia de PaymentsAPI para usar en tests de transferencias
 
+
 @pytest.fixture()
 def storage_state():
     return {
         "transfers_db": transfers_db,
         "idempotency_index": idempotency_index,
     }
+
 
 @pytest.fixture(autouse=True)
 def clear_storage():

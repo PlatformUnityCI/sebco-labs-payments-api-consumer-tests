@@ -1,5 +1,6 @@
 from commons_qa.api.api_client import ApiClient
 
+
 class PaymentsAPI(ApiClient):
     """
     Clase encargada de encapsular los endpoints de la API de Payments (health + transfer).

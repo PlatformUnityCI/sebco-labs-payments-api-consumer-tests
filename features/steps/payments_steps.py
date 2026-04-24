@@ -1,6 +1,7 @@
 from behave import *
 import json
 
+
 @given("el storage de transferencias está vacío")
 def step_clear_storage(context):
     context.storage_state["transfers_db"].clear()
@@ -29,7 +30,7 @@ def step_modify_amount(context, amount):
     else:
         try:
             parsed = float(amount)
-        except:
+        except Exception:
             parsed = amount
 
     context.payload["amount"] = parsed
@@ -78,6 +79,7 @@ def step_storage(context):
     transfer_id = context.body["transfer_id"]
     assert transfer_id in context.storage_state["transfers_db"]
 
+
 @then('el error es de tipo "{error_type}"')
 def step_error_type(context, error_type):
     assert "detail" in context.body
@@ -86,6 +88,7 @@ def step_error_type(context, error_type):
         error["type"] == error_type
         for error in context.body["detail"]
     )
+
 
 @then('el error contiene el tipo "{error_type}"')
 def step_impl(context, error_type):

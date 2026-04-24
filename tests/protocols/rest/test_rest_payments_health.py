@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.mark.regression
 @pytest.mark.payments
 class TestPaymentsHealth:
