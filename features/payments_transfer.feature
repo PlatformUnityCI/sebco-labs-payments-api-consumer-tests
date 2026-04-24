@@ -1,5 +1,5 @@
 @regression
-@payments_copy
+@payments_rest
 Feature: Payments Transfers
 
     Background:

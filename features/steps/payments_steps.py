@@ -20,7 +20,7 @@ def step_valid_payload(context):
 
 @given('modifico el amount a "{amount}"')
 def step_modify_amount(context, amount):
-    # 👇 parsing similar a lo que ya viste en pytest
+
     if amount == "null":
         parsed = None
     elif amount == "true":

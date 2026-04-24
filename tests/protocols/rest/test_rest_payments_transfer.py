@@ -3,7 +3,7 @@ import json
 
 
 @pytest.mark.regression
-@pytest.mark.payments_copy
+@pytest.mark.payments_rest
 class TestPaymentsTransfer:
 
     # 🔹 "Background" → contexto común
