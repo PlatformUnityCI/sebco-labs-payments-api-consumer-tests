@@ -9,3 +9,22 @@ runner = "python -m pytest -m regression -q"
 do_not_mutate = [
   "__init__.py"
 ]
+
+[tool.flake8]
+max-line-length = 120
+
+exclude = [
+  ".git",
+  "__pycache__",
+  ".venv",
+  "venv",
+  "env",
+  ".env"
+]
+
+extend-ignore = [
+  "W391",
+  "W292",
+  "F403",
+  "F405"
+]

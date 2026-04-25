@@ -1,7 +1,8 @@
 import pytest
+import logging
 
 @pytest.mark.regression
-@pytest.mark.payments
+@pytest.mark.payments_rest
 class TestPaymentsHealth:
     def test_healthcheck_returns_ok(self, payments_health_services):
 
@@ -11,4 +12,4 @@ class TestPaymentsHealth:
         assert response.status_code == 200
         assert body == {"status": "ok"}
 
-        print("Health check response:", body)
+        logging.info("Health check response: %s", body)

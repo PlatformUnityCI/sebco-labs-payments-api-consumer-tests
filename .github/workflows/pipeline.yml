@@ -11,8 +11,8 @@ on:
     - cron: '30 21 * * 1-5'
   workflow_dispatch:
     inputs:
-      pytest_mark:
-        description: 'QA mark to run tests'
+      qa_tag:
+        description: 'QA tag to run tests'
         default: regression
         required: true
 
@@ -30,6 +30,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DEFAULT_QA_TAG: 'regression'
 
     steps:
       - name: Debug info
@@ -64,18 +66,19 @@ jobs:
 
       - name: Export OpenAPI spec
         run: python scripts/export_openapi.py
+
       - name: Run tests
         run: |
           mkdir -p report
 
-          PYTEST_MARK="${{ inputs.pytest_mark }}"
-          if [ -z "$PYTEST_MARK" ]; then
-            PYTEST_MARK="regression"
+          QA_TAG="${{ inputs.qa_tag }}"
+          if [ -z "$QA_TAG" ]; then
+            QA_TAG="$QA_TAG"
           fi
           
-          echo "Running tests with mark: $PYTEST_MARK"
+          echo "Running tests with mark: $QA_TAG"
 
-          pytest -m "$PYTEST_MARK" -v \
+          pytest -m "$QA_TAG" -v \
             --maxfail=1 \
             --disable-warnings \
             --junitxml=report/junit.xml \
@@ -83,6 +86,24 @@ jobs:
             --self-contained-html
         env:
           PYTEST_ADDOPTS: "--color=yes"
+
+      - name: Run behave
+        run: |
+          mkdir -p report/behave
+
+          QA_TAG="${{ inputs.qa_tag }}"
+          if [ -z "$QA_TAG" ]; then
+            QA_TAG="$DEFAULT_QA_TAG"
+          fi
+
+          echo "Running behave with tag: @$QA_TAG"
+
+          behave \
+            --tags="@$QA_TAG" \
+            --junit \
+            --junit-directory report/behave \
+            -f behave_html_formatter:HTMLFormatter \
+            -o report/behave/report.html
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2
@@ -122,3 +143,5 @@ jobs:
     uses: PlatformUnityCI/cross-platform-guard/.github/workflows/ai-review.yml@main
     with:
       language: python
+    secrets:
+      CROSS_PLATFORM_GUARD_TOKEN: ${{ secrets.CROSS_PLATFORM_GUARD_TOKEN }}

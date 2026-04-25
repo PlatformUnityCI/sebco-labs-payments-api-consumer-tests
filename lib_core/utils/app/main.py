@@ -17,13 +17,13 @@ def healthcheck() -> dict:
 
 
 @app.post("/transfers",
-    response_model=TransferResponse,
-    status_code=status.HTTP_202_ACCEPTED,
-    responses={
-        400: {"model": ErrorResponse},
-        409: {"model": ErrorResponse},
-    },
-)
+          response_model=TransferResponse,
+          status_code=status.HTTP_202_ACCEPTED,
+          responses={
+              400: {"model": ErrorResponse},
+              409: {"model": ErrorResponse},
+          },
+          )
 def create_transfer_endpoint(payload: CreateTransferRequest):
     if payload.currency.upper() != "ARS":
         raise HTTPException(
