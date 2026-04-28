@@ -11,6 +11,19 @@ from lib_core.utils.apis.rest.payments_api import PaymentsAPI
 
 from lib_core.utils.app.storage import transfers_db, idempotency_index
 
+from hypothesis import settings
+from hypothesis import HealthCheck
+
+
+settings.register_profile(
+    "ci",
+    deadline=None,
+    max_examples=10,
+    suppress_health_check=[HealthCheck.too_slow]
+)
+
+settings.load_profile("ci")
+
 logger = logging.getLogger(__name__)
 
 

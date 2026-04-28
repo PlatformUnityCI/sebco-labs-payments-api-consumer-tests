@@ -1,5 +1,5 @@
 @regression
-@payments_rest
+@payments_behave
 Feature: Payments Transfers
 
     Background:
