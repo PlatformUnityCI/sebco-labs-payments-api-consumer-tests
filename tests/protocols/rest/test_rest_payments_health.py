@@ -2,7 +2,7 @@ import pytest
 import logging
 
 @pytest.mark.regression
-@pytest.mark.payments_rest
+@pytest.mark.payments_behave
 class TestPaymentsHealth:
     def test_healthcheck_returns_ok(self, payments_health_services):
 
