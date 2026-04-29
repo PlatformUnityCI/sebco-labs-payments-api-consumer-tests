@@ -26,7 +26,7 @@ from tests.protocols.rest.conftest import (
 # VALID TESTS for TRANSFER
 # ============================================================
 
-@pytest.mark.regression
+
 @pytest.mark.payments_hypothesis
 class TestRestPaymentsTransferHypothesisValidTransfer:
     """
@@ -80,7 +80,7 @@ class TestRestPaymentsTransferHypothesisValidTransfer:
 # INVALID TESTS for AMOUNT
 # ============================================================
 
-@pytest.mark.regression
+
 @pytest.mark.payments_hypothesis
 class TestRestPaymentsTransferHypothesisInvalidAmount:
     """
@@ -174,7 +174,7 @@ class TestRestPaymentsTransferHypothesisInvalidAmount:
 # VALID TESTS for ALIAS
 # ============================================================
 
-@pytest.mark.regression
+
 @pytest.mark.payments_hypothesis_valid_alias
 class TestRestPaymentsTransferHypothesisValidAlias:
     """
@@ -237,7 +237,7 @@ class TestRestPaymentsTransferHypothesisValidAlias:
 # INVALID TESTS for ALIAS
 # ============================================================
 
-@pytest.mark.regression
+
 @pytest.mark.payments_hypothesis_invalid_alias
 @pytest.mark.xfail(reason="Invalid aliases accepted", strict=False)
 class TestRestPaymentsTransferHypothesisInvalidAlias:
