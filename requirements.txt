@@ -43,7 +43,7 @@ rich==15.0.0
 # Markdown / formatting (report rendering)
 # =========================================================
 markdown-it-py==4.0.0
-mdit-py-plugins==0.5.0
+mdit-py-plugins==0.6.0
 mdurl==0.1.2
 linkify-it-py==2.1.0
 uc-micro-py==2.0.0
